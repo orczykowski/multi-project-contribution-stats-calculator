@@ -1,0 +1,36 @@
+{
+  "projects": [
+    {
+      "url": "ssh://git@git.empik.pl:7999/emms/product-web-api.git",
+      "excludePaths": null
+    },
+    {
+      "url": "ssh://git@git.empik.pl:7999/emms/product-service.git",
+      "excludePaths": null
+    },
+    {
+      "url": "ssh://git@git.empik.pl:7999/emms/cms-dynamic-configuration-service.git",
+      "excludePaths": null
+    },
+    {
+      "url": "ssh://git@git.empik.pl:7999/emms/empik-web-api.git",
+      "excludePaths": null
+    },
+    {
+      "url": "ssh://git@git.empik.pl:7999/ef/portal-front.git",
+      "excludePaths": ["package-lock.json"]
+    },
+    {
+      "url": "ssh://git@git.empik.pl:7999/cf-workers/portal-front-worker.git",
+      "excludePaths": ["package-lock.json"]
+    },
+    {
+      "url": "ssh://git@git.empik.pl:7999/em/kitwarr.git",
+      "excludePaths": ["package-lock.json"]
+    },
+    {
+      "url": "ssh://git@git.empik.pl:7999/cf-workers/ssr-generator-worker.git",
+      "excludePaths": ["package-lock.json"]
+    }
+  ]
+}
