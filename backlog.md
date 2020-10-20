@@ -1,0 +1,14 @@
+# Project backlog (TODO) 
+- add tests 
+- app config global 
+- init folders (maybe pass argument in File ?) 
+- rewrite clean up 
+- logger! 
+- gui 
+- polish characters in the stream 
+- gradle command
+- js for html menu hover when in is on top of view port
+- pass git user name and password from command line
+- null checks
+- prettify reports
+- add possible to define teams

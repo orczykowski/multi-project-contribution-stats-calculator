@@ -9,3 +9,7 @@ gradle-app.setting
 .gradletasknamecache
 /reports
 /tmp_repos
+/src/main/resources/projects.json
+.gradle
+/.gradle
+/.gradle/**
