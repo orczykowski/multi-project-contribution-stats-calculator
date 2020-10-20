@@ -23,14 +23,14 @@ public class ContributionStatsCalculator {
     this.reportFactory = reportFactory;
   }
 
-  public ContributionReport calculate(final LocalDate dateFrom) {
+  public ContributionReport calculate(final CalculationParameters params) {
     try {
-      var computableFutures = sendCalculationTaskForAllProjects(dateFrom);
+      var computableFutures = sendCalculationTaskForAllProjects(params.dateFrom());
       final var results = getResults(computableFutures);
-      return reportFactory.createFrom(dateFrom, results);
+      return reportFactory.createFrom(params.dateFrom(), results);
     } catch (InterruptedException | ExecutionException | IllegalStateException | IllegalArgumentException ex) {
       ex.printStackTrace();
-      return reportFactory.earlyCalculationFailReport(dateFrom, ex.getMessage());
+      return reportFactory.earlyCalculationFailReport(params.dateFrom(), ex.getMessage());
     }
   }
 

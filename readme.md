@@ -17,13 +17,14 @@ Report will be save in reports dictionary in root of projec.
 - added your [SSH KEY](https://www.ssh.com/ssh/keygen/) to git ([example for github](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account)) or pass user and password 
 
 ### how to run
-using gradlew wrapper ```./gradlew -q generateReport ARGS``` or short ```./gradlew -q gR ARGS```
+using gradlew wrapper ```./gradlew -q run ARGS``` or short ```./gradlew -q gR ARGS```
 where ARGS is:
- - [optional] date from in format `yyyy-mm-dd` if not pass it will be set on `1970-01-01` 
- - [optional] path to directory where will be save report default its `reports` in root of project
- - [optional] path to json file where you have lister project repositories, default is `resources/projects.json`
+ - [optional] `-PdateFrom=` start calculation date in format `yyyy-mm-dd` if not pass it will be set on `1970-01-01` 
+ - [optional] `-PresultDir=` path to directory where will be save report default its `reports` in root of project
+ - [optional] `-PrepoPath=` path to json file where you have lister project repositories, default is `resources/projects.json`
+ - [optional] `-PreportFormat=` report format available [HTML | CSV | PDF], default is HTML
 
-tip: add `--enable-preview` to run args
+tip: when you run app using "java" remember to add `--enable-preview` to run args
 
 ### projects repositories file 
 Json structure of project definition

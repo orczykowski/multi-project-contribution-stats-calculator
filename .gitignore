@@ -10,3 +10,4 @@ gradle-app.setting
 /reports
 /tmp_repos
 /src/main/resources/projects.json
+.gradle/

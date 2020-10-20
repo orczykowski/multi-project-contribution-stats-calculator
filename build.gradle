@@ -1,5 +1,5 @@
 plugins {
-  id('application')
+  id 'application'
 }
 
 group 'pl.boringstuff'
@@ -17,15 +17,23 @@ java {
 tasks.withType(JavaCompile).each {
   it.options.compilerArgs.add('--enable-preview')
 }
-
-task generateReport {
-  doLast {
-    println 'Hello world!'
-  }
+tasks.withType(JavaExec) {
+  jvmArgs += '--enable-preview'
 }
 
 application {
   mainClass = 'pl.boringstuff.ConsoleAppRunner'
+}
+
+run.with {
+  it.args(getOrDefault("dateFrom"), getOrDefault("resultDir"), getOrDefault("repoPath"), getOrDefault("reportFormat"))
+}
+
+String getOrDefault(String name) {
+  if (project.hasProperty(name)) {
+    return "$name=${project.getProperty(name)}"
+  }
+  ""
 }
 
 dependencies {
