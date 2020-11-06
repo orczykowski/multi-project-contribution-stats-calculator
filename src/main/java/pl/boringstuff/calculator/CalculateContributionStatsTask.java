@@ -14,7 +14,6 @@ class CalculateContributionStatsTask implements Task<ProjectCalculationStatsResu
   private final LocalDate dateFrom;
   private final RawCalculationResultParser rawResultParser;
 
-
   public CalculateContributionStatsTask(final Project project, final LocalDate dateFrom, final RawCalculationResultParser rawResultParser) {
     this.project = project;
     this.dateFrom = dateFrom;

@@ -1,5 +1,7 @@
 package pl.boringstuff.infrastructure.command;
 
+import pl.boringstuff.infrastructure.utils.Preconditions;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,13 +48,12 @@ public final class ExecutableCommand {
   }
 
   private void check(final String command) {
-    if (Objects.isNull(command) || command.isBlank()) {
-      throw new IllegalStateException();
-    }
+    Preconditions.checkState(Objects::nonNull, command);
+    Preconditions.checkState((arg) -> !arg.isBlank(), command);
   }
 
   public static class Builder {
-    private String command;
+    private final String command;
     private File directory;
     private List<String> args = new ArrayList<>();
 

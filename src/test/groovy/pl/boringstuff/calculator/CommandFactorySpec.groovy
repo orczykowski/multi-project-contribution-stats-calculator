@@ -1,6 +1,7 @@
 package pl.boringstuff.calculator
 
 import pl.boringstuff.calculator.project.Project
+import pl.boringstuff.infrastructure.config.CalculationParamsProvider
 import spock.lang.Specification
 
 import java.time.LocalDate
@@ -9,6 +10,10 @@ class CommandFactorySpec extends Specification {
 
   static final String URL = "git@github.com:orczykowski/multi-project-contribution-stats-calculator.git"
   static final Project PROJECT = new Project(URL, null)
+
+  def setup(){
+    CalculationParamsProvider.init([] as String[])
+  }
 
   def "should create command to checkout repo"() {
     when:

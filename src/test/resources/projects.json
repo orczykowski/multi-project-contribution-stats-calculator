@@ -2,7 +2,9 @@
   "projects": [
     {
       "url": "git@github.com:orczykowski/multi-project-contribution-stats-calculator.git",
-      "excludePaths": ["path_to_exclude"]
+      "excludePaths": [
+        "path_to_exclude"
+      ]
     }
   ]
 }

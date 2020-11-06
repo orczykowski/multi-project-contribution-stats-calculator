@@ -22,7 +22,7 @@ using gradlew wrapper ```./gradlew clean run ARGS``` or short ```./gradlew -q gR
 where ARGS is:
  - [optional] `-PdateFrom=` start calculation date in format `yyyy-mm-dd` if not pass it will be set on `1970-01-01` 
  - [optional] `-PresultDir=` path to directory where will be store report default its `reports` in root of project
- - [optional] `-PrepoPath=` path to json file where you have lister project repositories, default is `resources/projects.json`
+ - [optional] `-PrepoPath=` path to json file where you have lister project repositories, default is `projects.json`
  - [optional] `-PreportFormat=` report format available [HTML | CSV | PDF], default is HTML
 
 tip: when you run app using "java" remember to add `--enable-preview` to run args

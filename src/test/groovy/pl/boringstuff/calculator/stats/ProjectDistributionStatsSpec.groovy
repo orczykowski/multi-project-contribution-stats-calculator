@@ -32,7 +32,7 @@ class ProjectDistributionStatsSpec extends Specification {
 
   def "should ignore negative values and set participation as 0"() {
     given:
-      def negativeValue = new BigDecimal("-1");
+      def negativeValue = new BigDecimal("-1")
     when:
       def stats = new ProjectDistributionStats(negativeValue, negativeValue, negativeValue)
 

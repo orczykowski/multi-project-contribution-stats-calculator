@@ -22,17 +22,16 @@ import static pl.boringstuff.calculator.raport.writer.PdfReportLabel.TOTAL_CONTR
 import static pl.boringstuff.calculator.raport.writer.PdfReportLabel.USER_CONTRIBUTION;
 import pl.boringstuff.calculator.stats.ContributionStats;
 import pl.boringstuff.calculator.stats.UserContributionStats;
+import static pl.boringstuff.infrastructure.config.CalculationParamsProvider.getCalculationParams;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 class PdfReportWriter implements ReportWriter {
   private static final String REPORT_TITLE = "Multi project contribution stats report";
-  private static final String REPORTS_DIR = "reports";
 
   @Override
   public void write(final ContributionReport report) {
@@ -227,6 +226,6 @@ class PdfReportWriter implements ReportWriter {
   }
 
   private String resultDirectoryPath(final ContributionReport report) {
-    return "%s/contribution-report-%s.pdf".formatted(REPORTS_DIR, report.calculationDate());
+    return "%s/contribution-report-%s.pdf".formatted(getCalculationParams().resultDir(), report.calculationDate());
   }
 }

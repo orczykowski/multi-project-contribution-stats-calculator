@@ -1,4 +1,4 @@
-package pl.boringstuff.infrastructure
+package pl.boringstuff.infrastructure.config
 
 import static pl.boringstuff.calculator.project.ReportFormat.CSV
 import static pl.boringstuff.utils.CalculationParamsAssertion.assertCalculationParams
@@ -10,7 +10,7 @@ import java.time.LocalDate
 class ConsoleArgsParserSpec extends Specification {
 
   @Subject
-  ConsoleArgsParser argsParser = new ConsoleArgsParser()
+  ConsoleArgsParser argsParser = ConsoleArgsParser.getInstance()
 
   def "should create calculation params with defaults when no arg is pass from command line"() {
     given:
@@ -25,6 +25,7 @@ class ConsoleArgsParserSpec extends Specification {
               .hasDefaultRepoPath()
               .hasDefaultReportFormat()
               .hasDefaultResultDir()
+              .hasDefaultWorkingDir()
   }
 
   def "should create calculation params from console params"() {
@@ -32,10 +33,15 @@ class ConsoleArgsParserSpec extends Specification {
       def dateFrom = "2020-10-10"
       def path = "highway_to_hell"
       def format = CSV
-      def dir = "test_dir"
+      def resultDir = "result_dir"
+      def workingDir = "result_dir"
 
     and:
-      def args = ["dateFrom=$dateFrom", "resultDir=$dir", "repoPath=$path", "reportFormat=${format.name()}"] as String[]
+      def args = ["dateFrom=$dateFrom",
+                  "resultDir=$resultDir",
+                  "repoPath=$path",
+                  "reportFormat=${format.name()}",
+                  "workingDir=$workingDir"] as String[]
 
     when:
       def calculationParams = argsParser.parse(args)
@@ -45,27 +51,8 @@ class ConsoleArgsParserSpec extends Specification {
               .hasDateFrom(LocalDate.parse(dateFrom))
               .hasRepoPath(path)
               .hasReportFormat(format)
-              .hasResultDir(dir)
-  }
-
-  def "should set default value if param is not pass"() {
-    given:
-      def dateFrom = LocalDate.parse("2020-10-10")
-      def path = "highway_to_hell"
-      def format = CSV
-      def dir = "test_dir"
-    and:
-      def args = ["dateFrom=${dateFrom.toString()}", "resultDir=$dir", "repoPath=$path", "reportFormat=${format.toString()}"] as String[]
-
-    when:
-      def calculationParams = argsParser.parse(args)
-
-    then:
-      assertCalculationParams(calculationParams)
-              .hasDateFrom(dateFrom)
-              .hasRepoPath(path)
-              .hasReportFormat(format)
-              .hasResultDir(dir)
+              .hasResultDir(resultDir)
+              .hasWorkingDir(workingDir)
   }
 
   def "should ignore case of report format"() {

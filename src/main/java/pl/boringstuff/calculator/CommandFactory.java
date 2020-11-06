@@ -2,7 +2,7 @@ package pl.boringstuff.calculator;
 
 import pl.boringstuff.calculator.project.Project;
 import pl.boringstuff.infrastructure.command.ExecutableCommand;
-import pl.boringstuff.infrastructure.utils.DirectoryHelper;
+import static pl.boringstuff.infrastructure.config.CalculationParamsProvider.getCalculationParams;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -14,22 +14,26 @@ public class CommandFactory {
   public static ExecutableCommand cloneRepoCommand(final Project project) {
     return ExecutableCommand.newCommand("git")
             .withArgs(List.of("clone", project.getRepositoryUrl()))
-            .inDictionary(DirectoryHelper.pathToTmpRepoDir())
+            .inDictionary(getCalculationParams().workingDir())
             .build();
   }
 
   public static ExecutableCommand calculateContributionStatsCommand(final Project project, final LocalDate date) {
     return ExecutableCommand.newCommand("git")
             .withArgs(args(date, project))
-            .inDictionary(DirectoryHelper.pathToProjectRepoDir(project))
+            .inDictionary(pathToProjectRepoDir(project))
             .build();
   }
 
   public static ExecutableCommand removeRepo(final Project project) {
     return ExecutableCommand.newCommand("rm")
-            .withArgs(List.of("-rf", DirectoryHelper.pathToProjectRepoDir(project)))
-            .inDictionary(DirectoryHelper.pathToTmpRepoDir())
+            .withArgs(List.of("-rf", pathToProjectRepoDir(project)))
+            .inDictionary(getCalculationParams().workingDir())
             .build();
+  }
+
+  private static String pathToProjectRepoDir(final Project project) {
+    return getCalculationParams().workingDir().concat(project.getName());
   }
 
   private static List<String> args(final LocalDate date, final Project project) {

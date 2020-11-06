@@ -7,6 +7,7 @@ import static pl.boringstuff.calculator.project.ReportFormat.CSV;
 import pl.boringstuff.calculator.raport.ContributionReport;
 import pl.boringstuff.calculator.stats.ProjectStats;
 import pl.boringstuff.calculator.stats.UserContributionStats;
+import static pl.boringstuff.infrastructure.config.CalculationParamsProvider.getCalculationParams;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -65,6 +66,7 @@ public class CsvReportWriter implements ReportWriter {
   }
 
   private Path createReportFile(final ContributionReport report) {
-    return Path.of("%s/contribution-report-%s.csv".formatted(REPORTS_DIR, report.calculationDate()));
+
+    return Path.of("%s/contribution-report-%s.csv".formatted(getCalculationParams().resultDir(), report.calculationDate()));
   }
 }
