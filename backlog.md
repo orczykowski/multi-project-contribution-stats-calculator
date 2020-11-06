@@ -1,6 +1,5 @@
 # Project backlog (TODO) 
-- add tests 
-- app config global 
+- timeouts from global config 
 - init folders (maybe pass argument in File ?) 
 - rewrite clean up 
 - logger! 
@@ -12,3 +11,4 @@
 - null checks
 - prettify reports
 - add possible to define teams
+- add tests 

@@ -8,7 +8,6 @@ public class ReportWriterProvider {
       case HTML -> new HtmlReportWriter();
       case CSV -> new CsvReportWriter();
       case PDF -> new PdfReportWriter();
-      default -> throw new RuntimeException("unsuported format ");
     };
   }
 }

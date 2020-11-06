@@ -1,12 +1,17 @@
 package pl.boringstuff.calculator.project
 
-
+import pl.boringstuff.infrastructure.config.CalculationParamsProvider
 import spock.lang.Specification
 
 import java.util.stream.Collectors
 
 
 class JsonFileProjectRepositoryIntSpec extends Specification {
+
+  def setup() {
+    CalculationParamsProvider.init(["repoPath=src/test/resources/projects.json"] as String[])
+  }
+
   def "should return stream of all defined projects"() {
     given:
       def repository = JsonFileProjectRepository.getInstance()

@@ -16,16 +16,17 @@ class CommandExecutorSpec extends Specification {
       executionResult instanceof CommandExecutionResult.Success
   }
 
-  def "should contains string result"() {
+  def "should contains string result with all content of test resource"() {
     given:
-      def command = newCommand("ls").build()
+      def command = newCommand('echo test')
+              .build()
 
     when:
       def executionResult = command.execute()
 
     then:
       executionResult instanceof CommandExecutionResult.Success
-      executionResult.result() == "backlog.md\nbuild\nbuild.gradle\ngradle\ngradlew\ngradlew.bat\nreadme.md\nreports\nsettings.gradle\nsrc\ntmp_repos\n"
+      executionResult.result().trim() == "test"
   }
 
   def "should return failure info with message when execution is failed"() {

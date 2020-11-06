@@ -5,6 +5,7 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import static pl.boringstuff.calculator.project.ReportFormat.HTML;
 import pl.boringstuff.calculator.raport.ContributionReport;
+import static pl.boringstuff.infrastructure.config.CalculationParamsProvider.getCalculationParams;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -14,7 +15,6 @@ import java.util.Map;
 
 public class HtmlReportWriter implements ReportWriter {
   private static final String TEMPLATE_NAME = "reportTemplate.ftl";
-  private static final String REPORTS_DIR = "reports";
 
   @Override
   public void write(final ContributionReport report) {
@@ -31,7 +31,7 @@ public class HtmlReportWriter implements ReportWriter {
   }
 
   private Path createReportFile(final ContributionReport report) {
-    return Path.of("%s/contribution-report-%s.html".formatted(REPORTS_DIR, report.calculationDate()));
+    return Path.of("%s/contribution-report-%s.html".formatted(getCalculationParams().resultDir(), report.calculationDate()));
   }
 
   private Template getReportTemplate() throws IOException {

@@ -1,6 +1,7 @@
 package pl.boringstuff.calculator.project;
 
 import com.google.gson.Gson;
+import static pl.boringstuff.infrastructure.config.CalculationParamsProvider.getCalculationParams;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,7 +13,6 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 public class JsonFileProjectRepository implements ProjectRepository {
-  private static final String PROJECTS_FILE = "projects.json";
 
   private JsonFileProjectRepository() {
   }
@@ -25,8 +25,7 @@ public class JsonFileProjectRepository implements ProjectRepository {
   public Stream<Project> findAll() {
     try {
       return new Gson().fromJson(readProjectDefinitionsFile(), ProjectsEntity.class)
-              .projects
-              .stream()
+              .projects.stream()
               .filter(Objects::nonNull)
               .map(entity -> new Project(entity.url, entity.excludePaths));
     } catch (IOException e) {
@@ -35,8 +34,7 @@ public class JsonFileProjectRepository implements ProjectRepository {
   }
 
   private BufferedReader readProjectDefinitionsFile() throws IOException {
-    final var classLoader = getClass().getClassLoader();
-    final var file = Path.of(classLoader.getResource(PROJECTS_FILE).getFile());
+    final var file = Path.of(getCalculationParams().repoPath());
     return Files.newBufferedReader(file);
   }
 

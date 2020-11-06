@@ -1,4 +1,4 @@
-package pl.boringstuff.infrastructure;
+package pl.boringstuff.infrastructure.config;
 
 import pl.boringstuff.calculator.project.ReportFormat;
 
@@ -7,5 +7,6 @@ import java.time.LocalDate;
 public record CalculationParameters(LocalDate dateFrom,
                                     String resultDir,
                                     String repoPath,
-                                    ReportFormat reportFormat) {
+                                    ReportFormat reportFormat,
+                                    String workingDir) {
 }

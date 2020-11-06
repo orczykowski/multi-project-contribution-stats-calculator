@@ -5,25 +5,33 @@ import pl.boringstuff.calculator.RawCsvStatsResultParser;
 import pl.boringstuff.calculator.project.JsonFileProjectRepository;
 import pl.boringstuff.calculator.raport.ContributionReportFactory;
 import pl.boringstuff.calculator.raport.writer.ReportWriterProvider;
-import pl.boringstuff.infrastructure.ConsoleArgsParser;
 import pl.boringstuff.infrastructure.ShootDownCleaner;
+import pl.boringstuff.infrastructure.config.CalculationParamsProvider;
+import static pl.boringstuff.infrastructure.config.CalculationParamsProvider.getCalculationParams;
 import pl.boringstuff.infrastructure.executor.TaskExecutor;
 
 public class ConsoleAppRunner {
+
   public static void main(String[] args) {
 
-    final var argsParser = new ConsoleArgsParser();
-    final var parameters = argsParser.parse(args);
+    CalculationParamsProvider.init(args);
+    final var contributionStatsCalculator = createContributionStatsCalculator();
 
+    var report = contributionStatsCalculator
+            .calculate(getCalculationParams().dateFrom());
+
+    ReportWriterProvider.provideFor(getCalculationParams().reportFormat())
+            .write(report);
+
+    ShootDownCleaner.cleanup();
+  }
+
+  private static ContributionStatsCalculator createContributionStatsCalculator() {
     final var rawResultParser = RawCsvStatsResultParser.getInstance();
     final var executor = TaskExecutor.getInstance();
     final var repo = JsonFileProjectRepository.getInstance();
     final var reportFactory = new ContributionReportFactory();
 
-    var report = new ContributionStatsCalculator(executor, repo, reportFactory, rawResultParser)
-            .calculate(parameters.dateFrom());
-
-    ReportWriterProvider.provideFor(parameters.reportFormat()).write(report);
-    ShootDownCleaner.cleanup();
+    return new ContributionStatsCalculator(executor, repo, reportFactory, rawResultParser);
   }
 }

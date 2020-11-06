@@ -1,11 +1,8 @@
 package pl.boringstuff.utils
 
 import pl.boringstuff.calculator.project.ReportFormat
-import static pl.boringstuff.infrastructure.APP_DEFAULTS.DATE_FROM
-import static pl.boringstuff.infrastructure.APP_DEFAULTS.REPORT_FORMAT
-import static pl.boringstuff.infrastructure.APP_DEFAULTS.REPO_PATH
-import static pl.boringstuff.infrastructure.APP_DEFAULTS.RESULT_DIR
-import pl.boringstuff.infrastructure.CalculationParameters
+import pl.boringstuff.infrastructure.config.AppDefaultsConfig
+import pl.boringstuff.infrastructure.config.CalculationParameters
 
 import java.time.LocalDate
 
@@ -27,12 +24,17 @@ class CalculationParamsAssertion {
   }
 
   def hasRepoPath(final String repoPath) {
-    assert this.subject.repoPath() == repoPath
+    assert this.subject.repoPath().endsWith(repoPath)
     this
   }
 
   def hasResultDir(final String resultDir) {
-    assert this.subject.resultDir() == resultDir
+    assert this.subject.resultDir().endsWith(resultDir)
+    this
+  }
+
+  def hasWorkingDir(final String workingDir) {
+    assert this.subject.workingDir().endsWith(workingDir)
     this
   }
 
@@ -42,19 +44,23 @@ class CalculationParamsAssertion {
   }
 
   def hasDefaultDateFrom() {
-    hasDateFrom(LocalDate.parse(DATE_FROM.getValue()))
+    hasDateFrom(AppDefaultsConfig.DEFAULT_DATE_FROM)
   }
 
   def hasDefaultRepoPath() {
-    hasRepoPath(REPO_PATH.getValue())
+    hasRepoPath(AppDefaultsConfig.DEFAULT_PROJECT_REPOSITORY_PATH)
+  }
+
+  def hasDefaultWorkingDir() {
+    hasWorkingDir(AppDefaultsConfig.DEFAULT_WORKING_DIR)
   }
 
   def hasDefaultResultDir() {
-    hasResultDir(RESULT_DIR.getValue())
+    hasResultDir(AppDefaultsConfig.DEFAULT_RESULT_DIR)
   }
 
   def hasDefaultReportFormat() {
-    hasReportFormat(ReportFormat.valueOf(REPORT_FORMAT.getValue()))
+    hasReportFormat(AppDefaultsConfig.DEFAULT_REPORT_FORMAT)
   }
 
 }
