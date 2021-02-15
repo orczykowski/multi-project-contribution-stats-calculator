@@ -1,5 +1,6 @@
+![alt text](https://boringstuff.pl/wp-content/uploads/2020/12/cropped-more-blue-logo.png "boringstuff.pl")
 ## Multi Project Stats Calculator
-###### made by [BORINGSTUFF](http://boringstuff.pl)
+made by [BORINGSTUFF](http://boringstuff.pl)
 
 ### description
 It is project for fun and teach new features of current java version (now it's 15). It calculates contribution statistics for passed project repositories and produce report with:
@@ -18,14 +19,21 @@ Report will be store in reports dictionary in root of project.
 - added your [SSH KEY](https://www.ssh.com/ssh/keygen/) to git ([example for github](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account)) or pass user and password 
 
 ### how to run
-using gradlew wrapper ```./gradlew clean run ARGS``` or short ```./gradlew -q gR ARGS```
-where ARGS is:
- - [optional] `-PdateFrom=` start calculation date in format `yyyy-mm-dd` if not pass it will be set on `1970-01-01` 
- - [optional] `-PresultDir=` path to directory where will be store report default its `reports` in root of project
- - [optional] `-PrepoPath=` path to json file where you have lister project repositories, default is `projects.json`
- - [optional] `-PreportFormat=` report format available [HTML | CSV | PDF], default is HTML
+using gradlew wrapper ```./gradlew clean run ARGS```
+where possible ARGS is:
 
-tip: when you run app using "java" remember to add `--enable-preview` to run args
+parameter name | is require | description | default value   
+--- | --- | --- | ---
+dateFrom | false | start calculation date in format `yyyy-mm-dd` | `1970-01-01`
+resultDir | false |  path to directory where will be save report | `reports`
+repoPath | false | path to json file where you have project repositories | `projects.json`
+reportFormat | false | report format available HTML,  CSV,  PDF | `HTML`
+timout | false |  calculation task timeout in seconds | `1h`
+workingDir | false |  place where will be pull repos | `/tmp/multi-project-contributions-stats-calculator-working-dir/` 
+numberOfThreads | false |  number of concurrent threads | `10`
+queueSize | false |  size of thread pool queue | `40`
+
+tip: when you run app using plain "java" command remember to add `--enable-preview` to run args
 
 ### test
 - run `./gradlew clean test`
@@ -33,14 +41,17 @@ tip: when you run app using "java" remember to add `--enable-preview` to run arg
 
 ### projects repositories file 
 JSon structure of projects definitions
-```
+```json
 {
   "projects": [
     {
       "url": "ssh://git@boringstuff/prjects/some-project",
       "excludePaths": ["/path_to_exclude"]
-    },
-    ...
+    }, 
+    {
+       "url": "ssh://git@boringstuff/prjects/enother-project",
+       "excludePaths": []
+    }   
   ]
 }
 ```

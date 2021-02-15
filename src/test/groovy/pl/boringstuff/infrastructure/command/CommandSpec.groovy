@@ -1,16 +1,16 @@
 package pl.boringstuff.infrastructure.command
 
-import static pl.boringstuff.infrastructure.command.ExecutableCommand.newCommand
+import static ExecutableSystemCommand.newCommand
 import spock.lang.Specification
 
 class CommandSpec extends Specification {
 
   def "should throw exception when try create command from blank string"() {
     given:
-      def command = ExecutableCommand.newCommand(commandStr)
+      def command = ExecutableSystemCommand.newCommand(commandStr)
 
     when:
-      command.build()
+      command.buildSystemCommand()
 
     then:
       thrown(IllegalStateException)
@@ -21,10 +21,10 @@ class CommandSpec extends Specification {
 
   def "should create command without extra params"() {
     given:
-      def command = ExecutableCommand.newCommand("sh")
+      def command = ExecutableSystemCommand.newCommand("sh")
 
     when:
-      def executableCommand = command.build()
+      def executableCommand = command.buildSystemCommand()
 
     then:
       executableCommand.command() == "sh"
@@ -32,11 +32,11 @@ class CommandSpec extends Specification {
 
   def "should concat main command with extra params"() {
     given:
-      def command = ExecutableCommand.newCommand("cmd")
+      def command = ExecutableSystemCommand.newCommand("cmd")
               .withArgs(["--verbose", "someValue=2", "--anotherValue=3", "lastVal 4"])
 
     when:
-      def executableCommand = command.build()
+      def executableCommand = command.buildSystemCommand()
 
     then:
       executableCommand.command() == "cmd --verbose someValue=2 --anotherValue=3 lastVal 4"
@@ -44,11 +44,11 @@ class CommandSpec extends Specification {
 
   def "should filter blank args"() {
     given:
-      def command = ExecutableCommand.newCommand("cmd")
+      def command = ExecutableSystemCommand.newCommand("cmd")
               .withArgs(["--verbose", "", " ", null])
 
     when:
-      def executableCommand = command.build()
+      def executableCommand = command.buildSystemCommand()
 
     then:
       executableCommand.command() == "cmd --verbose"
@@ -56,10 +56,10 @@ class CommandSpec extends Specification {
 
   def "should create folder from dictionary path"() {
     given:
-      def command = ExecutableCommand.newCommand("cmd")
+      def command = ExecutableSystemCommand.newCommand("cmd")
               .inDictionary("/tmp")
     when:
-      def executableCommand = command.build()
+      def executableCommand = command.buildSystemCommand()
 
     then:
       executableCommand.directory().path == "/tmp"
@@ -68,7 +68,7 @@ class CommandSpec extends Specification {
 
   def "should execute command and return successful"() {
     given:
-      def command = newCommand("ls").build()
+      def command = newCommand("ls").buildSystemCommand()
 
     when:
       def executionResult = command.execute()

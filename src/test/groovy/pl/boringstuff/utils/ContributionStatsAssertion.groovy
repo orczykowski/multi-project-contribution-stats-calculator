@@ -1,6 +1,7 @@
 package pl.boringstuff.utils
 
-import pl.boringstuff.calculator.stats.ContributionStats
+
+import pl.boringstuff.domain.stats.model.ContributionStats
 
 class ContributionStatsAssertion {
   private final UserStatsAssertion context
