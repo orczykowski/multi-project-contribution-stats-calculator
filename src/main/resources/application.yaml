@@ -1,0 +1,13 @@
+spring.main.web-application-type: NONE
+
+run-defaults:
+  date-from:
+  result-dir:
+  repo-path:
+  report-format:
+  working-dir:
+  timout-in-seconds:
+
+executor:
+  number-of-threads: 10
+  queue-size: 40
