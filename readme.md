@@ -19,8 +19,8 @@ Report will be store in reports dictionary in root of project.
 - added your [SSH KEY](https://www.ssh.com/ssh/keygen/) to git ([example for github](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account)) or pass user and password 
 
 ### how to run
-using gradlew wrapper ```./gradlew clean run ARGS``` or short ```./gradlew -q gR ARGS```
-where ARGS is:
+using gradlew wrapper ```./gradlew clean run ARGS```
+where possible ARGS is:
 
 parameter name | is require | description | default value   
 --- | --- | --- | ---
