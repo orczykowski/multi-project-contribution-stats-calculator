@@ -1,9 +1,9 @@
 package pl.boringstuff.utils
 
-import pl.boringstuff.domain.project.User
-import pl.boringstuff.domain.stats.model.ContributionStats
-import pl.boringstuff.domain.stats.model.ProjectDistributionStats
-import pl.boringstuff.domain.stats.model.UserContributionStats
+import pl.boringstuff.core.project.User
+import pl.boringstuff.core.stats.model.ContributionStats
+import pl.boringstuff.core.stats.model.ProjectDistributionStats
+import pl.boringstuff.core.stats.model.UserContributionStats
 import static pl.boringstuff.utils.ContributionStatsAssertion.assertContributionStats
 import static pl.boringstuff.utils.DistributionStatsAssertion.assertDistributionStats
 import spock.util.mop.Use

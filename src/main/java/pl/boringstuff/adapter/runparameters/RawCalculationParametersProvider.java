@@ -5,8 +5,8 @@ import org.apache.logging.log4j.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import pl.boringstuff.domain.CalculationSpecificationSupplier;
-import pl.boringstuff.domain.project.ReportFormat;
+import pl.boringstuff.core.CalculationSpecificationSupplier;
+import pl.boringstuff.core.project.ReportFormat;
 
 import java.nio.file.FileSystems;
 import java.time.LocalDate;

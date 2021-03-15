@@ -3,7 +3,7 @@ package pl.boringstuff.infrastructure.executor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import pl.boringstuff.domain.CalculatorTaskProcessor;
+import pl.boringstuff.core.CalculatorTaskProcessor;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.CompletableFuture;

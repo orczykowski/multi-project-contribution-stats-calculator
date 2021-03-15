@@ -2,10 +2,10 @@ package pl.boringstuff.adapter.projects;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Component;
-import pl.boringstuff.domain.CalculationSpecificationSupplier;
-import pl.boringstuff.domain.FetchingProjectException;
-import pl.boringstuff.domain.project.Project;
-import pl.boringstuff.domain.project.ProjectRepository;
+import pl.boringstuff.core.CalculationSpecificationSupplier;
+import pl.boringstuff.core.FetchingProjectException;
+import pl.boringstuff.core.project.Project;
+import pl.boringstuff.core.project.ProjectRepository;
 
 import java.io.IOException;
 import java.util.List;
