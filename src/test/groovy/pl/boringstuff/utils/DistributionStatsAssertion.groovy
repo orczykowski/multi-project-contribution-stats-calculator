@@ -1,7 +1,7 @@
 package pl.boringstuff.utils
 
 
-import pl.boringstuff.domain.stats.model.ProjectDistributionStats
+import pl.boringstuff.core.stats.model.ProjectDistributionStats
 
 class DistributionStatsAssertion {
 

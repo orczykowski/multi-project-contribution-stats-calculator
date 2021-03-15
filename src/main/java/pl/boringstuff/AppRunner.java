@@ -1,16 +1,16 @@
 package pl.boringstuff;
 
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
-import pl.boringstuff.domain.MultiPartContributionStatsCalculator;
+import pl.boringstuff.core.MultiPartContributionStatsCalculator;
 
 @SpringBootApplication
 @ConfigurationPropertiesScan
 public class AppRunner {
 
   public static void main(String[] args) {
-    new SpringApplication(AppRunner.class)
+    new SpringApplicationBuilder(AppRunner.class)
             .run(args)
             .getBean(MultiPartContributionStatsCalculator.class)
             .createContributionReport();
