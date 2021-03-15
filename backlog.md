@@ -1,11 +1,8 @@
 # Project backlog (TODO) 
-- init folders (maybe pass argument in File ?) 
-- logger! 
 - gui 
-- polish characters in the stream 
 - gradle command
 - pass git user name and password from command line
 - null checks
 - prettify reports
-- add possible to define teams
+- add teams definition
 - add tests 
