@@ -4,6 +4,7 @@ import java.util.Objects;
 
 
 public record ContributionStats(Long lineOfCode, Long commits, Long files) implements Comparable {
+
   public ContributionStats(final Long lineOfCode, final Long commits, final Long files) {
     this.lineOfCode = normalize(lineOfCode);
     this.commits = normalize(commits);

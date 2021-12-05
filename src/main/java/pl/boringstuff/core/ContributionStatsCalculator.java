@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 
 @Component
 class ContributionStatsCalculator {
+
   private final Logger log = LoggerFactory.getLogger(ContributionStatsCalculator.class);
 
   private final CalculatorTaskProcessor calculationProcessor;
@@ -47,10 +48,10 @@ class ContributionStatsCalculator {
   public ContributionReport calculate() {
     final var reportSpec = specificationSupplier.supply();
 
+    log.info("Starting calculations for {} projects", projectRepository.count());
     try {
       final var computableFutures = sendCalculationTaskForAllProjects();
       final var results = getResults(computableFutures, reportSpec.timoutInSeconds());
-
       return reportFactory.createFrom(reportSpec.dateFrom(), results);
     } catch (InterruptedException ex) {
       log.error("processing has been interrupted, [run params: {}]", reportSpec, ex);
@@ -64,13 +65,16 @@ class ContributionStatsCalculator {
     }
   }
 
-  private List<ProjectCalculationStatsResult> getResults(final CompletableFuture[] computableFutures, final Long timeout) throws ExecutionException, InterruptedException, TimeoutException {
+  private List<ProjectCalculationStatsResult> getResults(
+          final CompletableFuture[] computableFutures, final Long timeout)
+          throws ExecutionException, InterruptedException, TimeoutException {
     return CompletableFuture.allOf(computableFutures)
             .thenApply(it -> joinResults(computableFutures))
             .get(timeout, TimeUnit.SECONDS);
   }
 
-  private List<ProjectCalculationStatsResult> joinResults(final CompletableFuture[] computableFutures) {
+  private List<ProjectCalculationStatsResult> joinResults(
+          final CompletableFuture[] computableFutures) {
     return Arrays.stream(computableFutures)
             .map(CompletableFuture<ProjectCalculationStatsResult>::join)
             .collect(Collectors.toList());
@@ -98,7 +102,6 @@ class ContributionStatsCalculator {
     final ProjectStats stats = new ProjectStats(project, chooseCorrectParser().parse((RawStatsCalculationResult.Success) result));
     return new ProjectCalculationStatsResult.Success(stats);
   }
-
 
   private GitFameRawCsvStatsResultParser chooseCorrectParser() {
     return this.rawCalculationResultParser;

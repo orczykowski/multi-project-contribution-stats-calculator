@@ -1,6 +1,7 @@
 package pl.boringstuff.core.project;
 
 public record User(String name) {
+
   private static final String UNKNOWN_USER = "<unknown user>";
 
   public User(final String name) {

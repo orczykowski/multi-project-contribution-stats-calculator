@@ -1,29 +1,14 @@
 package pl.boringstuff.adapter.writer;
 
-import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Element;
-import com.itextpdf.text.Font;
-import static com.itextpdf.text.Font.BOLD;
-import static com.itextpdf.text.Font.FontFamily.HELVETICA;
-import static com.itextpdf.text.Font.ITALIC;
-import com.itextpdf.text.PageSize;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.Phrase;
+import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import org.springframework.stereotype.Component;
 import pl.boringstuff.core.CalculationSpecificationSupplier;
 import pl.boringstuff.core.project.ReportFormat;
-import static pl.boringstuff.core.project.ReportFormat.PDF;
 import pl.boringstuff.core.raport.ContributionReport;
 import pl.boringstuff.core.raport.ReportWriter;
-import static pl.boringstuff.adapter.writer.PdfReportLabel.GENERAL_INFORMATION;
-import static pl.boringstuff.adapter.writer.PdfReportLabel.PROJECT_CONTRIBUTION;
-import static pl.boringstuff.adapter.writer.PdfReportLabel.TOTAL_CONTRIBUTION;
-import static pl.boringstuff.adapter.writer.PdfReportLabel.USER_CONTRIBUTION;
 import pl.boringstuff.core.stats.model.ContributionStats;
 import pl.boringstuff.core.stats.model.UserContributionStats;
 
@@ -33,14 +18,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
+import static com.itextpdf.text.Font.BOLD;
+import static com.itextpdf.text.Font.FontFamily.HELVETICA;
+import static com.itextpdf.text.Font.ITALIC;
+import static pl.boringstuff.adapter.writer.PdfReportLabel.*;
+import static pl.boringstuff.core.project.ReportFormat.PDF;
+
 @Component
 class PdfReportWriter implements ReportWriter {
-  private static final String REPORT_TITLE = "Multi project contribution stats report";
 
-  private final CalculationSpecificationSupplier specificationSupplier;
+    private static final String REPORT_TITLE = "Multi project contribution stats report";
 
-  PdfReportWriter(final CalculationSpecificationSupplier specificationSupplier) {
-    this.specificationSupplier = specificationSupplier;
+    private final CalculationSpecificationSupplier specificationSupplier;
+
+    PdfReportWriter(final CalculationSpecificationSupplier specificationSupplier) {
+        this.specificationSupplier = specificationSupplier;
   }
 
   @Override
@@ -50,134 +42,146 @@ class PdfReportWriter implements ReportWriter {
       openDocument(report, document);
       document.add(createReportTitle());
       document.add(createGeneralInformationSection(report));
-      document.add(totalContribution(report));
-      document.add(userContribution(report));
-      document.add(createProjectContribution(report));
+        document.add(totalContribution(report));
+        document.add(userContribution(report));
+        document.add(createProjectContribution(report));
     } catch (FileNotFoundException | DocumentException ex) {
-      throw new ReportException(ex.getMessage(), PDF);
+        throw new ReportException(ex.getMessage(), PDF);
     } finally {
-      document.close();
+        document.close();
     }
   }
 
-  @Override
-  public ReportFormat format() {
-    return PDF;
-  }
-
-  private void openDocument(final ContributionReport report, final Document document) throws FileNotFoundException, DocumentException {
-    final FileOutputStream outputStream = new FileOutputStream(resultDirectoryPath(report));
-    PdfWriter.getInstance(document, outputStream);
-    document.open();
-  }
-
-  private Paragraph createReportTitle() {
-    final var paragraph = emptyLines(1);
-    final var title = new Paragraph(REPORT_TITLE, new Font(HELVETICA, 22, Font.BOLD));
-    title.setAlignment(Element.ALIGN_CENTER);
-    title.add(emptyLines(4));
-    paragraph.add(title);
-    return paragraph;
-  }
-
-  private Element userContribution(final ContributionReport report) {
-    final List<UserContributionStats> stats = report.totalUserContributionStats();
-    var values = Stream.of();
-    for (int i = 0; i < stats.size(); i++) {
-      values = Stream.concat(values, countUserStatsAsStreamValues(i, stats.get(i)));
+    @Override
+    public ReportFormat format() {
+        return PDF;
     }
+
+    private void openDocument(final ContributionReport report, final Document document)
+            throws FileNotFoundException, DocumentException {
+        final FileOutputStream outputStream = new FileOutputStream(resultDirectoryPath(report));
+        PdfWriter.getInstance(document, outputStream);
+        document.open();
+    }
+
+    private Paragraph createReportTitle() {
+        final var paragraph = emptyLines(1);
+        final var title = new Paragraph(REPORT_TITLE, new Font(HELVETICA, 22, Font.BOLD));
+        title.setAlignment(Element.ALIGN_CENTER);
+        title.add(emptyLines(4));
+        paragraph.add(title);
+        return paragraph;
+    }
+
+    private Element userContribution(final ContributionReport report) {
+        final List<UserContributionStats> stats = report.totalUserContributionStats();
+        var values = Stream.of();
+        for (int i = 0; i < stats.size(); i++) {
+            values = Stream.concat(values, countUserStatsAsStreamValues(i, stats.get(i)));
+        }
     return createSingleStatsPart(USER_CONTRIBUTION, values.map(Object::toString));
   }
 
   private Element totalContribution(final ContributionReport report) {
-    final var projectStats = report.projectContributionStats();
-    var streamsValues = new ArrayList<Stream<Object>>();
-    for (int i = 0; i < projectStats.size(); i++) {
-      final var stat = projectStats.get(i);
-      streamsValues.add(Stream.of(i + 1, stat.project().getName()));
-      streamsValues.add(contributionStatsAsStreamValues(stat.total()));
-    }
+      final var projectStats = report.projectContributionStats();
+      var streamsValues = new ArrayList<Stream<Object>>();
+      for (int i = 0; i < projectStats.size(); i++) {
+          final var stat = projectStats.get(i);
+          streamsValues.add(Stream.of(i + 1, stat.project().getName()));
+          streamsValues.add(contributionStatsAsStreamValues(stat.total()));
+      }
 
-    streamsValues.add(Stream.concat(Stream.of(projectStats.size()), contributionStatsAsStreamValues(report.totalContribution())));
+      streamsValues.add(Stream.concat(Stream.of(projectStats.size()),
+              contributionStatsAsStreamValues(report.totalContribution())));
 
-    final var values = streamsValues.stream()
-            .reduce(Stream::concat)
-            .orElseGet(Stream::empty)
-            .map(Object::toString);
+      final var values = streamsValues.stream()
+              .reduce(Stream::concat)
+              .orElseGet(Stream::empty)
+              .map(Object::toString);
 
-    return createSingleStatsPart(TOTAL_CONTRIBUTION, values);
+      return createSingleStatsPart(TOTAL_CONTRIBUTION, values);
   }
 
   private Element createGeneralInformationSection(final ContributionReport report) {
-    final var generalInformationParagraph = reportPartHeader(GENERAL_INFORMATION);
-    generalInformationParagraph.add(datesInfoParagraph(report));
-    generalInformationParagraph.add(emptyLines(1));
+      final var generalInformationParagraph = reportPartHeader(GENERAL_INFORMATION);
+      generalInformationParagraph.add(datesInfoParagraph(report));
+      generalInformationParagraph.add(emptyLines(1));
 
-    final var table = createTable(GENERAL_INFORMATION.getTableHeaders(), projectDefinitionsAsValueList(report));
-    generalInformationParagraph.add(table);
-    return generalInformationParagraph;
+      final var table = createTable(GENERAL_INFORMATION.getTableHeaders(),
+              projectDefinitionsAsValueList(report));
+      generalInformationParagraph.add(table);
+      return generalInformationParagraph;
   }
 
   private Element createProjectContribution(final ContributionReport report) {
-    final var projectContributionParagraph = reportPartHeader(PROJECT_CONTRIBUTION);
+      final var projectContributionParagraph = reportPartHeader(PROJECT_CONTRIBUTION);
 
-    report.projectContributionStats()
-            .stream()
-            .map(it -> singleProjectContributionParagraph(it.project().getName(), it.userStats()))
-            .forEach(projectContributionParagraph::add);
+      report.projectContributionStats()
+              .stream()
+              .map(it -> singleProjectContributionParagraph(it.project().getName(), it.userStats()))
+              .forEach(projectContributionParagraph::add);
 
-    return projectContributionParagraph;
+      return projectContributionParagraph;
   }
 
-  private Element singleProjectContributionParagraph(final String name, final List<UserContributionStats> userStats) {
-    final String replace = name.toUpperCase();
-    final var paragraph = new Paragraph(replace, new Font(HELVETICA, 14, BOLD));
-    paragraph.setAlignment(Element.ALIGN_CENTER);
-    paragraph.add(emptyLines(1));
-    var values = Stream.of();
-    for (int i = 0; i < userStats.size(); i++) {
-      values = Stream.concat(values, userProjectDetailsStats(i, userStats.get(i)));
+    private Element singleProjectContributionParagraph(final String name,
+                                                       final List<UserContributionStats> userStats) {
+        final String replace = name.toUpperCase();
+        final var paragraph = new Paragraph(replace, new Font(HELVETICA, 14, BOLD));
+        paragraph.setAlignment(Element.ALIGN_CENTER);
+        paragraph.add(emptyLines(1));
+        var values = Stream.of();
+        for (int i = 0; i < userStats.size(); i++) {
+            values = Stream.concat(values, userProjectDetailsStats(i, userStats.get(i)));
+        }
+        paragraph.add(
+                createTable(PROJECT_CONTRIBUTION.getTableHeaders(), values.map(Object::toString)));
+        return paragraph;
     }
-    paragraph.add(createTable(PROJECT_CONTRIBUTION.getTableHeaders(), values.map(Object::toString)));
-    return paragraph;
-  }
 
-  private Paragraph reportPartHeader(final PdfReportLabel label) {
-    final var reportPartHeaderParagraph = new Paragraph(label.getName(), new Font(HELVETICA, 16, Font.BOLD));
-    reportPartHeaderParagraph.setAlignment(Element.ALIGN_LEFT);
+    private Paragraph reportPartHeader(final PdfReportLabel label) {
+        final var reportPartHeaderParagraph = new Paragraph(label.getName(),
+                new Font(HELVETICA, 16, Font.BOLD));
+        reportPartHeaderParagraph.setAlignment(Element.ALIGN_LEFT);
 
-    final var descriptionParagraph = new Paragraph(label.getDescription(), new Font(HELVETICA, 10, ITALIC));
-    descriptionParagraph.setAlignment(Element.ALIGN_LEFT);
-    reportPartHeaderParagraph.add(descriptionParagraph);
+        final var descriptionParagraph = new Paragraph(label.getDescription(),
+                new Font(HELVETICA, 10, ITALIC));
+        descriptionParagraph.setAlignment(Element.ALIGN_LEFT);
+        reportPartHeaderParagraph.add(descriptionParagraph);
 
-    reportPartHeaderParagraph.add(emptyLines(1));
+        reportPartHeaderParagraph.add(emptyLines(1));
 
-    return reportPartHeaderParagraph;
-  }
-
-  private Stream<Object> countUserStatsAsStreamValues(final int idx, final UserContributionStats userStat) {
-    return Stream.concat(Stream.of(idx + 1, userStat.user().name()), contributionStatsAsStreamValues(userStat.counts()));
-  }
-
-  private Stream<Object> userProjectDetailsStats(final int idx, final UserContributionStats userStat) {
-    final var counts = userStat.counts();
-    final var distribution = userStat.distribution();
-    return Stream.of(idx + 1, userStat.user().name(),
-            counts.lineOfCode(), counts.commits(), counts.files(),
-            distribution.codeLinesParticipation(), distribution.commitsParticipation(), distribution.filesParticipation());
-  }
-
-  private Stream<Object> contributionStatsAsStreamValues(final ContributionStats stats) {
-    return Stream.of(stats.lineOfCode(), stats.commits(), stats.files());
-  }
-
-  private Stream<String> projectDefinitionsAsValueList(final ContributionReport report) {
-    final var projectStats = report.projectContributionStats();
-    var values = Stream.of();
-    for (int i = 0; i < projectStats.size(); i++) {
-      var project = projectStats.get(i).project();
-      values = Stream.concat(values, Stream.of(i + 1, project.getName(), project.getRepositoryUrl(), project.getJoinedExcludedPaths(",")));
+        return reportPartHeaderParagraph;
     }
+
+    private Stream<Object> countUserStatsAsStreamValues(final int idx,
+                                                        final UserContributionStats userStat) {
+        return Stream.concat(Stream.of(idx + 1, userStat.user().name()),
+                contributionStatsAsStreamValues(userStat.counts()));
+    }
+
+    private Stream<Object> userProjectDetailsStats(final int idx,
+                                                   final UserContributionStats userStat) {
+        final var counts = userStat.counts();
+        final var distribution = userStat.distribution();
+        return Stream.of(idx + 1, userStat.user().name(),
+                counts.lineOfCode(), counts.commits(), counts.files(),
+                distribution.codeLinesParticipation(), distribution.commitsParticipation(),
+                distribution.filesParticipation());
+    }
+
+    private Stream<Object> contributionStatsAsStreamValues(final ContributionStats stats) {
+        return Stream.of(stats.lineOfCode(), stats.commits(), stats.files());
+    }
+
+    private Stream<String> projectDefinitionsAsValueList(final ContributionReport report) {
+        final var projectStats = report.projectContributionStats();
+        var values = Stream.of();
+        for (int i = 0; i < projectStats.size(); i++) {
+            var project = projectStats.get(i).project();
+            values = Stream.concat(values, Stream.of(i + 1, project.getName(), project.getRepositoryUrl(),
+                    project.getJoinedExcludedPaths(",")));
+        }
     return values.map(Object::toString);
   }
 
@@ -189,10 +193,11 @@ class PdfReportWriter implements ReportWriter {
   }
 
   private Element datesInfoParagraph(final ContributionReport report) {
-    final var datesInfo = new Paragraph();
-    datesInfo.add(dateInfoParagraph("calculation date: ", report.calculationDate().toString()));
-    datesInfo.add(dateInfoParagraph("start of the calculation period: ", report.dateFrom().toString()));
-    return datesInfo;
+      final var datesInfo = new Paragraph();
+      datesInfo.add(dateInfoParagraph("calculation date: ", report.calculationDate().toString()));
+      datesInfo.add(
+              dateInfoParagraph("start of the calculation period: ", report.dateFrom().toString()));
+      return datesInfo;
   }
 
   private Paragraph dateInfoParagraph(final String label, final String formattedDate) {
@@ -211,19 +216,19 @@ class PdfReportWriter implements ReportWriter {
   }
 
   private Paragraph createTable(final List<String> headerLabels, final Stream<String> values) {
-    final var paragraph = new Paragraph();
-    final var table = new PdfPTable(headerLabels.size());
-    table.setWidthPercentage(100);
-    final var headerCells = headerLabels.stream().sequential().map(this::asHeaderCell);
-    final var valuesCells = values.map(value -> createCell(value, Font.NORMAL));
+      final var paragraph = new Paragraph();
+      final var table = new PdfPTable(headerLabels.size());
+      table.setWidthPercentage(100);
+      final var headerCells = headerLabels.stream().sequential().map(this::asHeaderCell);
+      final var valuesCells = values.map(value -> createCell(value, Font.NORMAL));
 
-    Stream.of(headerCells, valuesCells)
-            .flatMap(it -> it)
-            .forEach(table::addCell);
+      Stream.of(headerCells, valuesCells)
+              .flatMap(it -> it)
+              .forEach(table::addCell);
 
-    paragraph.add(table);
-    paragraph.add(emptyLines(2));
-    return paragraph;
+      paragraph.add(table);
+      paragraph.add(emptyLines(2));
+      return paragraph;
   }
 
   private PdfPCell asHeaderCell(final String header) {

@@ -5,6 +5,16 @@
       "excludePaths": [
         "path_to_exclude"
       ]
+    },
+    {
+      "url": "git@github.com:orczykowski/multi-project-contribution-stats-calculator.git",
+      "excludePaths": [
+        "path_to_exclude"
+      ]
+    },
+    {
+      "url": "git@github.com:orczykowski/boring-examples.git",
+      "excludePaths": []
     }
   ]
 }

@@ -1,6 +1,5 @@
 package pl.boringstuff.adapter.runparameters;
 
-import static java.util.Objects.requireNonNullElse;
 import org.apache.logging.log4j.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,8 +10,13 @@ import pl.boringstuff.core.project.ReportFormat;
 import java.nio.file.FileSystems;
 import java.time.LocalDate;
 
+import static java.util.Objects.requireNonNullElse;
+
 @Component
 public class RawCalculationParametersProvider implements CalculationSpecificationSupplier {
+
+  private static final Logger log = LoggerFactory.getLogger(RawCalculationParametersProvider.class);
+
   private static final String CURRENT_DIR;
   private static final ReportFormat DEFAULT_REPORT_FORMAT;
   private static final LocalDate DEFAULT_BEGIN_DATE;
@@ -22,10 +26,7 @@ public class RawCalculationParametersProvider implements CalculationSpecificatio
   private static final Long DEFAULT_TIMEOUT_IN_SECONDS;
 
   static {
-    CURRENT_DIR = FileSystems.getDefault()
-            .getPath("")
-            .toAbsolutePath()
-            .toString();
+    CURRENT_DIR = FileSystems.getDefault().getPath("").toAbsolutePath().toString();
     DEFAULT_REPORT_FORMAT = ReportFormat.HTML;
     DEFAULT_BEGIN_DATE = LocalDate.parse("1970-01-01");
     DEFAULT_RESULT_DIR = withBaseDir("reports/");
@@ -34,18 +35,16 @@ public class RawCalculationParametersProvider implements CalculationSpecificatio
     DEFAULT_TIMEOUT_IN_SECONDS = 60 * 60L;
   }
 
-  private static final Logger log = LoggerFactory.getLogger(RawCalculationParametersProvider.class);
-
   private final CalculationSpecification specification;
 
   public RawCalculationParametersProvider(final CalculationParameters parameters) {
-    this.specification = new CalculationSpecification(
-            getBeginDate(parameters.dateFrom()),
-            getPathOrDefault(parameters.resultDir(), DEFAULT_RESULT_DIR),
-            getPathOrDefault(parameters.repoPath(), DEFAULT_REPO_PATH),
-            getReportFormat(parameters.reportFormat()),
-            getPathOrDefault(parameters.workingDir(), DEFAULT_WORKING_DIR),
-            requireNonNullElse(parameters.timoutInSeconds(), DEFAULT_TIMEOUT_IN_SECONDS));
+    this.specification = new CalculationSpecification(getBeginDate(parameters.dateFrom()),
+        getPathOrDefault(parameters.resultDir(), DEFAULT_RESULT_DIR),
+        getPathOrDefault(parameters.repoPath(), DEFAULT_REPO_PATH),
+        getReportFormat(parameters.reportFormat()),
+        getPathOrDefault(parameters.workingDir(), DEFAULT_WORKING_DIR),
+        requireNonNullElse(parameters.timoutInSeconds(), DEFAULT_TIMEOUT_IN_SECONDS));
+    log.info("run with configuration {}", this.specification);
   }
 
   @Override
@@ -82,5 +81,4 @@ public class RawCalculationParametersProvider implements CalculationSpecificatio
       return DEFAULT_REPORT_FORMAT;
     }
   }
-
 }

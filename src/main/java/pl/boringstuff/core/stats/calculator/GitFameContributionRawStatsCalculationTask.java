@@ -8,7 +8,6 @@ import pl.boringstuff.infrastructure.command.CommandExecutionResult;
 import pl.boringstuff.infrastructure.command.CommandExecutionResult.Failure;
 import pl.boringstuff.infrastructure.command.ExecutableSystemCommand;
 import pl.boringstuff.infrastructure.executor.Task;
-import static pl.boringstuff.infrastructure.utils.Preconditions.checkRequiredArgument;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,59 +17,65 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import static pl.boringstuff.infrastructure.utils.Preconditions.checkRequiredArgument;
+
 
 public class GitFameContributionRawStatsCalculationTask implements Task<RawStatsCalculationResult> {
-  private static final Logger log = LoggerFactory.getLogger(GitFameContributionRawStatsCalculationTask.class);
 
-  private final Project project;
-  private final LocalDate dateForm;
-  private final String workingDir;
+    private static final Logger log = LoggerFactory.getLogger(
+            GitFameContributionRawStatsCalculationTask.class);
 
-  public GitFameContributionRawStatsCalculationTask(final Project project, final LocalDate dateForm, final String workingDir) {
-    checkRequiredArgument(dateForm);
-    checkRequiredArgument(dateForm);
-    checkRequiredArgument(project);
-    this.dateForm = dateForm;
-    this.workingDir = workingDir;
-    this.project = project;
-  }
+    private final Project project;
+    private final LocalDate dateForm;
+    private final String workingDir;
 
-  public RawStatsCalculationResult run() {
-    try {
-      if (checkOutRepo() instanceof Failure failure) {
-        return new RawStatsCalculationResult.Failure(project, failure.result());
-      }
-      final var commandExecutionResult = calculateStats();
-      return createCalculationResultFrom(commandExecutionResult);
-    } finally {
-      cleanup();
+    public GitFameContributionRawStatsCalculationTask(final Project project, final LocalDate dateForm,
+                                                      final String workingDir) {
+        checkRequiredArgument(dateForm);
+        checkRequiredArgument(dateForm);
+        checkRequiredArgument(project);
+        this.dateForm = dateForm;
+        this.workingDir = workingDir;
+        this.project = project;
     }
-  }
 
-  private RawStatsCalculationResult createCalculationResultFrom(final CommandExecutionResult result) {
-    if (result instanceof Failure failure) {
-      return new RawStatsCalculationResult.Failure(project, failure.result());
+    public RawStatsCalculationResult run() {
+        try {
+            if (checkOutRepo() instanceof Failure failure) {
+                return new RawStatsCalculationResult.Failure(project, failure.result());
+            }
+            final var commandExecutionResult = calculateStats();
+            return createCalculationResultFrom(commandExecutionResult);
+        } finally {
+            cleanup();
+        }
     }
-    return new RawStatsCalculationResult.Success(result.result());
-  }
 
-  private CommandExecutionResult checkOutRepo() {
-    return ExecutableSystemCommand.newCommand("git")
-            .withArgs(List.of("clone", project.getRepositoryUrl()))
-            .inDictionary(workingDir)
-            .buildSystemCommand()
-            .execute();
-  }
+    private RawStatsCalculationResult createCalculationResultFrom(
+            final CommandExecutionResult result) {
+        if (result instanceof Failure failure) {
+            return new RawStatsCalculationResult.Failure(project, failure.result());
+        }
+        return new RawStatsCalculationResult.Success(result.result());
+    }
 
-  private CommandExecutionResult calculateStats() {
-    return ExecutableSystemCommand.newCommand("git")
-            .withArgs(args(dateForm, project))
-            .inDictionary(pathToProjectRepoDir())
-            .buildSystemCommand()
-            .execute();
-  }
+    private CommandExecutionResult checkOutRepo() {
+        return ExecutableSystemCommand.newCommand("git")
+                .withArgs(List.of("clone", project.getRepositoryUrl()))
+                .inDictionary(workingDir)
+                .buildSystemCommand()
+                .execute();
+    }
 
-  private void cleanup() {
+    private CommandExecutionResult calculateStats() {
+        return ExecutableSystemCommand.newCommand("git")
+                .withArgs(args(dateForm, project))
+                .inDictionary(pathToProjectRepoDir())
+                .buildSystemCommand()
+                .execute();
+    }
+
+    private void cleanup() {
     try {
       final var path = pathToProjectRepoDir();
       FileUtils.delete(new File(path), FileUtils.RECURSIVE);
@@ -84,10 +89,11 @@ public class GitFameContributionRawStatsCalculationTask implements Task<RawStats
   }
 
   private List<String> args(final LocalDate date, final Project project) {
-    final List<String> args = new ArrayList<>(Arrays.asList("fame", "--hide-progressbar", "--format=csv", "--after=" + date.toString()));
-    if (!project.getExcludePaths().isEmpty()) {
-      args.add("--exclude=" + project.getJoinedExcludedPaths(","));
-    }
-    return Collections.unmodifiableList(args);
+      final List<String> args = new ArrayList<>(
+              Arrays.asList("fame", "--hide-progressbar", "--format=csv", "--after=" + date.toString()));
+      if (!project.getExcludePaths().isEmpty()) {
+          args.add("--exclude=" + project.getJoinedExcludedPaths(","));
+      }
+      return Collections.unmodifiableList(args);
   }
 }

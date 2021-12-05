@@ -5,5 +5,6 @@ import org.springframework.boot.context.properties.ConstructorBinding;
 
 @ConstructorBinding
 @ConfigurationProperties("executor")
-        record ExecutorConfiguration(int numberOfThreads, int queueSize) {
+record ExecutorConfiguration(int numberOfThreads, int queueSize) {
+
 }

@@ -5,14 +5,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import pl.boringstuff.core.CalculatorTaskProcessor;
 
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.RejectedExecutionHandler;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 @Component
 public class ThreadPoolTaskExecutor implements CalculatorTaskProcessor {
+
   private static final Logger log = LoggerFactory.getLogger(ThreadPoolTaskExecutor.class);
 
   private final ExecutorConfiguration executorConfiguration;
@@ -20,6 +17,7 @@ public class ThreadPoolTaskExecutor implements CalculatorTaskProcessor {
   private final ThreadPoolExecutor threadPoolExecutor;
 
   private ThreadPoolTaskExecutor(final ExecutorConfiguration executorConfiguration) {
+    log.debug("creating thread executor from {}", executorConfiguration);
     this.executorConfiguration = executorConfiguration;
     this.threadPoolExecutor = create();
   }

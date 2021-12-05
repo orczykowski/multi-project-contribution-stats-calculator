@@ -15,4 +15,5 @@ public record ContributionReport(
         List<UserContributionStats> totalUserContributionStats,
         ContributionStats totalContribution,
         List<String> failures) {
+
 }

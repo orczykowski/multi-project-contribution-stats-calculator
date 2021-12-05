@@ -13,3 +13,5 @@ gradle-app.setting
 .gradle
 /.gradle
 /.gradle/**
+projects.json
+/lib

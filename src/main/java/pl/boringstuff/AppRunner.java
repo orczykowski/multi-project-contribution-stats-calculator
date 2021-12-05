@@ -9,11 +9,11 @@ import pl.boringstuff.core.MultiPartContributionStatsCalculator;
 @ConfigurationPropertiesScan
 public class AppRunner {
 
-  public static void main(String[] args) {
+  public static void main(final String[] args) {
     new SpringApplicationBuilder(AppRunner.class)
-            .run(args)
-            .getBean(MultiPartContributionStatsCalculator.class)
-            .createContributionReport();
+        .run(args)
+        .getBean(MultiPartContributionStatsCalculator.class)
+        .createContributionReport();
     System.exit(0);
   }
 }

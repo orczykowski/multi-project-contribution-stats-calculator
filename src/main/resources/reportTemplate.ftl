@@ -198,11 +198,14 @@
     </#if>
     <article id="generalInformation">
         <h2>General information</h2>
-        <p>General information on projects for which statistics are calculated and the period for which the work was
+        <p>General information on projects for which statistics are calculated and the period for which
+            the work was
             taken into stats</p>
         <hr/>
-        <p><span class="label">calculation date:</span><span class="mainInfo">${report.calculationDate()}</span></p>
-        <p><span class="label">start of the calculation period:</span><span class="mainInfo">${report.dateFrom()}</span>
+        <p><span class="label">calculation date:</span><span
+                    class="mainInfo">${report.calculationDate()}</span></p>
+        <p><span class="label">start of the calculation period:</span><span
+                    class="mainInfo">${report.dateFrom()}</span>
         </p>
         <table>
             <thead>

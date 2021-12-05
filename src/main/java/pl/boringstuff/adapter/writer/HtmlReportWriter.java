@@ -6,7 +6,6 @@ import freemarker.template.TemplateException;
 import org.springframework.stereotype.Component;
 import pl.boringstuff.core.CalculationSpecificationSupplier;
 import pl.boringstuff.core.project.ReportFormat;
-import static pl.boringstuff.core.project.ReportFormat.HTML;
 import pl.boringstuff.core.raport.ContributionReport;
 import pl.boringstuff.core.raport.ReportWriter;
 
@@ -16,8 +15,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
 
+import static pl.boringstuff.core.project.ReportFormat.HTML;
+
 @Component
 public class HtmlReportWriter implements ReportWriter {
+
   private static final String TEMPLATE_NAME = "reportTemplate.ftl";
 
   private final CalculationSpecificationSupplier specificationSupplier;
@@ -28,8 +30,8 @@ public class HtmlReportWriter implements ReportWriter {
 
   @Override
   public void write(final ContributionReport report) {
-    try (var writer = Files.newBufferedWriter(createReportPath(report))) {
-      var template = getReportTemplate();
+    try (final var writer = Files.newBufferedWriter(createReportPath(report))) {
+      final var template = getReportTemplate();
       template.process(asMap(report), writer);
     } catch (IOException | TemplateException ex) {
       throw new ReportException(ex.getMessage(), HTML);
