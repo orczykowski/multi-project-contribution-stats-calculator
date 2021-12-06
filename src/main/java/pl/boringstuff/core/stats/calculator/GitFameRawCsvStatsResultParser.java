@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 
 @Component
 public class GitFameRawCsvStatsResultParser {
+
   private static final String NAME = "name";
   private static final String LOC = "loc";
   private static final String COMMITS = "commits";

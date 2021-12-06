@@ -1,79 +1,80 @@
 package pl.boringstuff.infrastructure.command
 
-import static ExecutableSystemCommand.newCommand
 import spock.lang.Specification
+
+import static ExecutableSystemCommand.newCommand
 
 class CommandSpec extends Specification {
 
-  def "should throw exception when try create command from blank string"() {
-    given:
-      def command = ExecutableSystemCommand.newCommand(commandStr)
+    def "should throw exception when try create command from blank string"() {
+        given:
+        def command = ExecutableSystemCommand.newCommand(commandStr)
 
-    when:
-      command.buildSystemCommand()
+        when:
+        command.buildSystemCommand()
 
-    then:
-      thrown(IllegalStateException)
+        then:
+        thrown(IllegalStateException)
 
-    where:
-      commandStr << ["", " ", null]
-  }
+        where:
+        commandStr << ["", " ", null]
+    }
 
-  def "should create command without extra params"() {
-    given:
-      def command = ExecutableSystemCommand.newCommand("sh")
+    def "should create command without extra params"() {
+        given:
+        def command = ExecutableSystemCommand.newCommand("sh")
 
-    when:
-      def executableCommand = command.buildSystemCommand()
+        when:
+        def executableCommand = command.buildSystemCommand()
 
-    then:
-      executableCommand.command() == "sh"
-  }
+        then:
+        executableCommand.command() == "sh"
+    }
 
-  def "should concat main command with extra params"() {
-    given:
-      def command = ExecutableSystemCommand.newCommand("cmd")
-              .withArgs(["--verbose", "someValue=2", "--anotherValue=3", "lastVal 4"])
+    def "should concat main command with extra params"() {
+        given:
+        def command = ExecutableSystemCommand.newCommand("cmd")
+                .withArgs(["--verbose", "someValue=2", "--anotherValue=3", "lastVal 4"])
 
-    when:
-      def executableCommand = command.buildSystemCommand()
+        when:
+        def executableCommand = command.buildSystemCommand()
 
-    then:
-      executableCommand.command() == "cmd --verbose someValue=2 --anotherValue=3 lastVal 4"
-  }
+        then:
+        executableCommand.command() == "cmd --verbose someValue=2 --anotherValue=3 lastVal 4"
+    }
 
-  def "should filter blank args"() {
-    given:
-      def command = ExecutableSystemCommand.newCommand("cmd")
-              .withArgs(["--verbose", "", " ", null])
+    def "should filter blank args"() {
+        given:
+        def command = ExecutableSystemCommand.newCommand("cmd")
+                .withArgs(["--verbose", "", " ", null])
 
-    when:
-      def executableCommand = command.buildSystemCommand()
+        when:
+        def executableCommand = command.buildSystemCommand()
 
-    then:
-      executableCommand.command() == "cmd --verbose"
-  }
+        then:
+        executableCommand.command() == "cmd --verbose"
+    }
 
-  def "should create folder from dictionary path"() {
-    given:
-      def command = ExecutableSystemCommand.newCommand("cmd")
-              .inDictionary("/tmp")
-    when:
-      def executableCommand = command.buildSystemCommand()
+    def "should create folder from dictionary path"() {
+        given:
+        def command = ExecutableSystemCommand.newCommand("cmd")
+                .inDictionary("/tmp")
+        when:
+        def executableCommand = command.buildSystemCommand()
 
-    then:
-      executableCommand.directory().path == "/tmp"
-  }
+        then:
+        executableCommand.directory().path == "/tmp"
+    }
 
 
-  def "should execute command and return successful"() {
-    given:
-      def command = newCommand("ls").buildSystemCommand()
+    def "should execute command and return successful"() {
+        given:
+        def command = newCommand("ls").buildSystemCommand()
 
-    when:
-      def executionResult = command.execute()
+        when:
+        def executionResult = command.execute()
 
-    then:
-      executionResult != null
-  }
+        then:
+        executionResult != null
+    }
 }

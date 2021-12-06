@@ -1,14 +1,16 @@
 package pl.boringstuff.core.stats.model;
 
 import pl.boringstuff.core.project.Project;
-import static pl.boringstuff.infrastructure.utils.Preconditions.checkRequiredArgument;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import static pl.boringstuff.infrastructure.utils.Preconditions.checkRequiredArgument;
+
 public class ProjectStats {
+
   private final Project project;
   private final List<UserContributionStats> userStats;
   private final ContributionStats total;
@@ -33,7 +35,8 @@ public class ProjectStats {
     return total;
   }
 
-  private List<UserContributionStats> getOnlySignificantUserStats(final List<UserContributionStats> userStats) {
+  private List<UserContributionStats> getOnlySignificantUserStats(
+          final List<UserContributionStats> userStats) {
     return Objects.requireNonNullElse(userStats, new ArrayList<UserContributionStats>())
             .stream()
             .filter(it -> it.counts().isSignificantContribution())

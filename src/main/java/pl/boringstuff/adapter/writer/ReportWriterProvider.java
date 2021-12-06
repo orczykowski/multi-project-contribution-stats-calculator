@@ -1,6 +1,5 @@
 package pl.boringstuff.adapter.writer;
 
-import static java.util.function.Function.identity;
 import org.springframework.stereotype.Component;
 import pl.boringstuff.core.project.ReportFormat;
 import pl.boringstuff.core.raport.ReportWriter;
@@ -9,8 +8,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static java.util.function.Function.identity;
+
 @Component
 public class ReportWriterProvider {
+
   private final Map<ReportFormat, ReportWriter> writers;
 
   ReportWriterProvider(final List<ReportWriter> writers) {

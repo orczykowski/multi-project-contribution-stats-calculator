@@ -8,21 +8,21 @@ public record ProjectDistributionStats(
         BigDecimal commitsParticipation,
         BigDecimal filesParticipation) {
 
-  public ProjectDistributionStats(final BigDecimal codeLinesParticipation, final BigDecimal commitsParticipation, final BigDecimal filesParticipation) {
-    this.codeLinesParticipation = normalize(codeLinesParticipation);
-    this.commitsParticipation = normalize(commitsParticipation);
-    this.filesParticipation = normalize(filesParticipation);
-  }
-
-  public static ProjectDistributionStats empty() {
-    return new ProjectDistributionStats(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
-  }
-
-  private BigDecimal normalize(final BigDecimal maybeValue) {
-    final var value = Objects.requireNonNullElse(maybeValue, BigDecimal.ZERO);
-    if (value.signum() == -1) {
-      return BigDecimal.ZERO;
+    public ProjectDistributionStats(final BigDecimal codeLinesParticipation, final BigDecimal commitsParticipation, final BigDecimal filesParticipation) {
+        this.codeLinesParticipation = normalize(codeLinesParticipation);
+        this.commitsParticipation = normalize(commitsParticipation);
+        this.filesParticipation = normalize(filesParticipation);
     }
-    return value;
-  }
+
+    public static ProjectDistributionStats empty() {
+        return new ProjectDistributionStats(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
+    }
+
+    private BigDecimal normalize(final BigDecimal maybeValue) {
+        final var value = Objects.requireNonNullElse(maybeValue, BigDecimal.ZERO);
+        if (value.signum() == -1) {
+            return BigDecimal.ZERO;
+        }
+        return value;
+    }
 }

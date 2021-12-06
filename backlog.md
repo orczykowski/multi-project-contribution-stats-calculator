@@ -1,5 +1,6 @@
-# Project backlog (TODO) 
-- gui 
+# Project backlog (TODO)
+
+- gui
 - gradle command
 - pass git user name and password from command line
 - null checks

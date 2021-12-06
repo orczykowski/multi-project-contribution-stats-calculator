@@ -7,6 +7,7 @@ import java.util.Objects;
 import java.util.Set;
 
 public final class Project {
+
   private static final String GIT_EXTENSION = ".git";
   private static final String EMPTY = "";
 
@@ -51,17 +52,20 @@ public final class Project {
 
   @Override
   public boolean equals(final Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
     final Project project = (Project) o;
     return Objects.equals(name, project.name) &&
-            Objects.equals(excludePaths, project.excludePaths) &&
             Objects.equals(repositoryUrl, project.repositoryUrl);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, excludePaths, repositoryUrl);
+    return Objects.hash(name, repositoryUrl);
   }
 
 }

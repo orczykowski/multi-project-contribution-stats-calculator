@@ -9,6 +9,7 @@ import java.time.Clock;
 
 @Configuration
 public class AppConfiguration {
+
   @Bean
   ObjectMapper objectMapper() {
     final var objectMapper = new ObjectMapper();
