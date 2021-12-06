@@ -75,12 +75,12 @@ public class GitFameContributionRawStatsCalculationTask implements Task<RawStats
                 .execute();
     }
 
-    private void cleanup() {
-    try {
-      final var path = pathToProjectRepoDir();
-      FileUtils.delete(new File(path), FileUtils.RECURSIVE);
+  private void cleanup() {
+    final var path = pathToProjectRepoDir();
+    try {     
+        FileUtils.delete(new File(path), 9);
     } catch (final IOException e) {
-      log.error("cannot remove repo dir {}", pathToProjectRepoDir(), e);
+        log.error("cannot remove repo dir {}", pathToProjectRepoDir(), e);
     }
   }
 
