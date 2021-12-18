@@ -29,6 +29,12 @@ jacocoTestReport {
     }
 }
 
+bootRun {
+    if (project.hasProperty('args')) {
+        args project.args.split(',')
+    }
+}
+
 application {
     mainClass = 'pl.boringstuff.AppRunner'
 }

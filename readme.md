@@ -5,8 +5,7 @@
 made by [BORINGSTUFF](http://boringstuff.pl)
 
 ### description
-
-It is project for fun and teach new features of current java version (now it's 15). It calculates contribution statistics for passed project repositories and produce report with:
+Software calculates contribution statistics for passed project repositories and produce report with:
 
 - aggregated contribution statistics for project
 - user contribution for per project
@@ -26,21 +25,22 @@ dictionary in root of project.
 
 ### how to run
 
-using gradlew wrapper ```./gradlew clean run ARGS```
+using gradlew wrapper ```. ./gradlew clean bootRun -Pargs=ARGS```
 where possible ARGS is:
 
 parameter name | is require | description | default value
 --- | --- | --- | ---
-dateFrom | false | start calculation date in format `yyyy-mm-dd` | `1970-01-01`
-resultDir | false |  path to directory where will be save report | `reports`
-repoPath | false | path to json file where you have project repositories | `projects.json`
-reportFormat | false | report format available HTML, CSV, PDF | `HTML`
-timout | false |  calculation task timeout in seconds | `1h`
-workingDir | false |  place where will be pull repos | `/tmp/multi-project-contributions-stats-calculator-working-dir/`
-numberOfThreads | false |  number of concurrent threads | `10`
-queueSize | false |  size of thread pool queue | `40`
+--run.dateFrom | false | start calculation date in format `yyyy-mm-dd` | `1970-01-01`
+--run.resultDir | false |  path to directory where will be save report | `reports`
+--run.repoPath | false | path to json file where you have project repositories | `projects.json`
+--run.reportFormat | false | report format available HTML, CSV, PDF | `HTML`
+--run.timout | false |  calculation task timeout in seconds | `1h`
+--run.workingDir | false |  place where will be pull repos | `/tmp/multi-project-contributions-stats-calculator-working-dir/`
+--run.numberOfThreads | false |  number of concurrent threads | `10`
+--run.queueSize | false |  size of thread pool queue | `40`
 
-tip: when you run app using plain "java" command remember to add `--enable-preview` to run args
+example:
+`./gradlew clean bootRun -Pargs=--run.dateFrom="2021-01-01",--run.reportFormat=CSV`
 
 ### test
 
