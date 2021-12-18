@@ -9,7 +9,7 @@ apply plugin: "groovy"
 apply plugin: "java"
 
 group 'pl.boringstuff'
-version '1.0.1'
+version '1.0.2'
 sourceCompatibility = '17'
 
 repositories {
@@ -26,6 +26,12 @@ jacocoTestReport {
     reports {
         xml.enabled false
         csv.enabled false
+    }
+}
+
+bootRun {
+    if (project.hasProperty('args')) {
+        args project.args.split(',')
     }
 }
 

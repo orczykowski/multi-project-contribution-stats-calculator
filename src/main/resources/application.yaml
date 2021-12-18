@@ -1,13 +1,12 @@
 spring.main.web-application-type: NONE
 
-run-defaults:
-  date-from:
-  result-dir:
-  repo-path:
-  report-format:
-  working-dir:
-  timout-in-seconds:
-
+run:
+  resultDir: reports/
+  repoPath: projects.json
+  reportFormat: HTML
+  workingDir: /tmp/multi-project-contributions-stats-calculator-working-dir/
+  timoutInSeconds: 3600
+  dateFrom: "1970-01-01"
 executor:
   number-of-threads: 10
   queue-size: 40
