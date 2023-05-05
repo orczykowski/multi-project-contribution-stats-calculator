@@ -8,7 +8,7 @@ plugins {
 apply plugin: "groovy"
 apply plugin: "java"
 
-group 'pl.boringstuff'
+group 'pl.orczykowski'
 version '1.0.1'
 sourceCompatibility = '17'
 
@@ -30,7 +30,7 @@ jacocoTestReport {
 }
 
 application {
-    mainClass = 'pl.boringstuff.AppRunner'
+    mainClass = 'pl.orczykowski.AppRunner'
 }
 
 run.with {

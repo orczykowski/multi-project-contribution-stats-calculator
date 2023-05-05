@@ -1,8 +1,8 @@
-![alt text](https://boringstuff.pl/wp-content/uploads/2020/12/cropped-more-blue-logo.png "boringstuff.pl")
+![alt text](https://orczykowski.pl/wp-content/uploads/2020/12/cropped-more-blue-logo.png "orczykowski.pl")
 
 ## Multi Project Stats Calculator
 
-made by [BORINGSTUFF](http://boringstuff.pl)
+made by [orczykowski](http://orczykowski.pl)
 
 ### description
 
@@ -55,13 +55,13 @@ JSon structure of projects definitions
 {
   "projects": [
     {
-      "url": "ssh://git@boringstuff/prjects/some-project",
+      "url": "ssh://git@orczykowski/prjects/some-project",
       "excludePaths": [
         "/path_to_exclude"
       ]
     },
     {
-      "url": "ssh://git@boringstuff/prjects/enother-project",
+      "url": "ssh://git@orczykowski/prjects/enother-project",
       "excludePaths": []
     }
   ]

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Multi project contribution report - boringstuff.pl</title>
+    <title>Multi project contribution report - orczykowski.pl</title>
 </head>
 <style>
     :root {
@@ -148,13 +148,13 @@
         color: #fef;
     }
 
-    #boringstuff {
+    #orczykowski {
         position: absolute;
         bottom: 0.1em;
         left: 20%;
     }
 
-    #boringstuff a:hover {
+    #orczykowski a:hover {
         color: #3e829b;
     }
 
@@ -181,7 +181,7 @@
         <li><a href="#repositoryStats">PROJECT CONTRIBUTION STATISTICS</a></li>
     </ol>
     <hr/>
-    <p id="boringstuff">created by <a href="http://boringstuff.pl">boringstuff.pl</a></p>
+    <p id="orczykowski">created by <a href="http://orczykowski.pl">orczykowski.pl</a></p>
 </nav>
 <div id="reports">
     <#assign failuresCount=report.failures()?size >
