@@ -1,5 +1,3 @@
-![alt text](https://orczykowski.pl/wp-content/uploads/2020/12/cropped-more-blue-logo.png "orczykowski.pl")
-
 ## Multi Project Stats Calculator
 
 made by [orczykowski](http://orczykowski.pl)
