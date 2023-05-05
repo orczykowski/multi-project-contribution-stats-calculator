@@ -8,7 +8,7 @@ plugins {
 apply plugin: "groovy"
 apply plugin: "java"
 
-group 'pl.boringstuff'
+group 'pl.orczykowski'
 version '1.0.2'
 sourceCompatibility = '17'
 
@@ -36,7 +36,7 @@ bootRun {
 }
 
 application {
-    mainClass = 'pl.boringstuff.AppRunner'
+    mainClass = 'pl.orczykowski.AppRunner'
 }
 
 run.with {
