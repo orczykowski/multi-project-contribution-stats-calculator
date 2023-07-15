@@ -37,8 +37,13 @@ parameter name | is require | description | default value
 --run.numberOfThreads | false |  number of concurrent threads | `10`
 --run.queueSize | false |  size of thread pool queue | `40`
 
-example:
+examples:
+
 `./gradlew clean bootRun -Pargs=--run.dateFrom="2021-01-01",--run.reportFormat=CSV`
+
+`./gradlew clean bootRun -Pargs=--run.dateFrom="2021-01-01",--run.reportFormat=HTML`
+
+`./gradlew clean bootRun -Pargs=--run.dateFrom="2021-01-01",--run.reportFormat=PDF`
 
 ### test
 
