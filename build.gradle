@@ -1,32 +1,32 @@
 plugins {
+    id 'java'
+    id 'groovy'
+    id 'io.spring.dependency-management' version '1.1.7'
+    id 'org.springframework.boot' version '3.5.6'
     id 'application'
-    id 'jacoco'
-    id 'org.springframework.boot' version '2.6.1'
-    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 }
 
-apply plugin: "groovy"
-apply plugin: "java"
+java {
+    sourceCompatibility = '25'
+}
 
 group 'pl.orczykowski'
-version '1.0.2'
-sourceCompatibility = '17'
+version '1.0.3'
+
+ext {
+    commonsCsvVersion = '1.8'
+    jacksonVersion = '2.12.1'
+    freemarkerVersion = '2.3.30'
+    itextVersion = '5.5.13.2'
+    jgitVersion = '7.1.0.202411261347-r'
+    groovyVersion = '4.0.24'
+    spockVersion = '2.3-groovy-4.0'
+    equalsverifierVersion = '3.17.5'
+}
 
 repositories {
     mavenCentral()
     maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-}
-
-jacoco {
-    toolVersion = "0.8.7"
-}
-
-jacocoTestReport {
-    dependsOn test
-    reports {
-        xml.enabled false
-        csv.enabled false
-    }
 }
 
 bootRun {
@@ -36,7 +36,7 @@ bootRun {
 }
 
 application {
-    mainClass = 'pl.orczykowski.AppRunner'
+    mainClass = 'io.github.orczykowski.AppRunner'
 }
 
 run.with {
@@ -52,15 +52,17 @@ String safeGet(String name) {
 
 dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter'
-    implementation group: 'org.apache.commons', name: 'commons-csv', version: '1.8'
-    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.12.1'
-    implementation group: 'org.freemarker', name: 'freemarker', version: '2.3.30'
-    implementation group: 'com.itextpdf', name: 'itextpdf', version: '5.5.13.2'
-    implementation group: 'org.eclipse.jgit', name: 'org.eclipse.jgit', version: '5.10.0.202012080955-r'
+    implementation group: 'org.apache.commons', name: 'commons-csv', version: "${commonsCsvVersion}"
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: "${jacksonVersion}"
+    implementation group: 'org.freemarker', name: 'freemarker', version: "${freemarkerVersion}"
+    implementation group: 'com.itextpdf', name: 'itextpdf', version: "${itextVersion}"
+    implementation group: 'org.eclipse.jgit', name: 'org.eclipse.jgit', version: "${jgitVersion}"
+    implementation group: 'org.eclipse.jgit', name: 'org.eclipse.jgit.ssh.apache', version: "${jgitVersion}"
 
-    testImplementation group: 'org.codehaus.groovy', name: 'groovy-all', version: '3.0.9', ext: 'pom'
-    testImplementation group: 'org.spockframework', name: 'spock-core', version: '2.0-groovy-3.0'
-    testImplementation group: 'nl.jqno.equalsverifier', name: 'equalsverifier', version: '3.7.2'
+    testImplementation group: 'org.apache.groovy', name: 'groovy-all', version: "${groovyVersion}", ext: 'pom'
+    testImplementation group: 'org.spockframework', name: 'spock-core', version: "${spockVersion}"
+    testImplementation group: 'nl.jqno.equalsverifier', name: 'equalsverifier', version: "${equalsverifierVersion}"
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 test {
@@ -69,4 +71,3 @@ test {
         events "passed", "skipped", "failed"
     }
 }
-

@@ -1,73 +1,132 @@
-## Multi Project Stats Calculator
+# Multi-Project Contribution Stats Calculator
 
-made by [orczykowski](http://orczykowski.pl)
+A command-line tool that calculates contribution statistics across multiple Git repositories and generates comprehensive reports. Built with Spring Boot and [JGit](https://www.eclipse.org/jgit/) for native Git analysis — no external Git tools required.
 
-### description
-Software calculates contribution statistics for passed project repositories and produce report with:
+## Features
 
-- aggregated contribution statistics for project
-- user contribution for per project
-- user aggregated statistics for all projects Possible report formats: CSV, HTML PDF
+- **Multi-repository analysis** — analyze contributions across any number of Git repositories in a single run
+- **Per-contributor breakdown** — commits, lines added, lines removed, files changed, production vs test code, and new files
+- **Project distribution** — percentage of each contributor's share per project
+- **Aggregated totals** — combined stats across all projects per contributor
+- **Multiple report formats** — HTML (with search), CSV, PDF
+- **Configurable date range** — analyze contributions from a specific start date
+- **Path exclusions** — exclude directories (e.g., generated code, vendor) per project
+- **Parallel execution** — concurrent repository analysis with configurable thread pool
 
-The statistics will be calculated from begin date from argument (if not pass it is 1970-01-01), current master code version and repositories defined in repository file. Report will be store in reports
-dictionary in root of project.
+## Requirements
 
-### requirements
+- [Java 21+](https://openjdk.java.net/projects/jdk/21/)
+- SSH key or credentials configured for your Git hosting provider
+  ([GitHub SSH setup](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account))
 
-- installed [JAVA 17](https://openjdk.java.net/projects/jdk/17/)
-- installed GIT
-- installed [GIT FAME](https://github.com/oleander/git-fame-rb)
-- added your [SSH KEY](https://www.ssh.com/ssh/keygen/) to
-  git ([example for github](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account))
-  or pass user and password
+## Quick Start
 
-### how to run
+1. Define your repositories in `projects.json` (see [Project Configuration](#project-configuration))
+2. Run the calculator:
 
-using gradlew wrapper ```. ./gradlew clean bootRun -Pargs=ARGS```
-where possible ARGS is:
+```bash
+./gradlew clean bootRun -Pargs=--run.dateFrom="2024-01-01"
+```
 
-parameter name | is require | description | default value
---- | --- | --- | ---
---run.dateFrom | false | start calculation date in format `yyyy-mm-dd` | `1970-01-01`
---run.resultDir | false |  path to directory where will be save report | `reports`
---run.repoPath | false | path to json file where you have project repositories | `projects.json`
---run.reportFormat | false | report format available HTML, CSV, PDF | `HTML`
---run.timout | false |  calculation task timeout in seconds | `1h`
---run.workingDir | false |  place where will be pull repos | `/tmp/multi-project-contributions-stats-calculator-working-dir/`
---run.numberOfThreads | false |  number of concurrent threads | `10`
---run.queueSize | false |  size of thread pool queue | `40`
+3. Find the generated report in the `reports/` directory
 
-examples:
+## Usage
 
-`./gradlew clean bootRun -Pargs=--run.dateFrom="2021-01-01",--run.reportFormat=CSV`
+```bash
+./gradlew clean bootRun -Pargs=ARGS
+```
 
-`./gradlew clean bootRun -Pargs=--run.dateFrom="2021-01-01",--run.reportFormat=HTML`
+Multiple arguments are comma-separated:
 
-`./gradlew clean bootRun -Pargs=--run.dateFrom="2021-01-01",--run.reportFormat=PDF`
+```bash
+./gradlew clean bootRun -Pargs=--run.dateFrom="2024-01-01",--run.reportFormat=CSV
+```
 
-### test
+### Parameters
 
-- run `./gradlew clean test`
-- test coverage `./gradlew clean jacocoTestReport`
+| Parameter | Required | Description | Default |
+|---|---|---|---|
+| `--run.dateFrom` | No | Start date for analysis (`yyyy-MM-dd`) | `1970-01-01` |
+| `--run.resultDir` | No | Output directory for reports | `reports` |
+| `--run.repoPath` | No | Path to project definitions JSON file | `projects.json` |
+| `--run.reportFormat` | No | Report format: `HTML`, `CSV`, or `PDF` | `HTML` |
+| `--run.timoutInSeconds` | No | Timeout per repository analysis (seconds) | `3600` |
+| `--run.workingDir` | No | Temporary directory for cloned repositories | `/tmp/multi-project-contributions-stats-calculator-working-dir/` |
+| `--run.numberOfThreads` | No | Number of concurrent analysis threads | `10` |
+| `--run.queueSize` | No | Thread pool queue size | `40` |
 
-### projects repositories file
+### Examples
 
-JSon structure of projects definitions
+```bash
+# HTML report (default) with search functionality
+./gradlew clean bootRun -Pargs=--run.dateFrom="2024-01-01"
+
+# CSV report
+./gradlew clean bootRun -Pargs=--run.dateFrom="2024-01-01",--run.reportFormat=CSV
+
+# PDF report with custom output directory
+./gradlew clean bootRun -Pargs=--run.dateFrom="2024-01-01",--run.reportFormat=PDF,--run.resultDir="output"
+```
+
+## Project Configuration
+
+Define repositories to analyze in a JSON file (default: `projects.json`):
 
 ```json
 {
   "projects": [
     {
-      "url": "ssh://git@orczykowski/prjects/some-project",
+      "url": "git@github.com:your-org/project-one.git",
       "excludePaths": [
-        "/path_to_exclude"
+        "docs/",
+        "generated/"
       ]
     },
     {
-      "url": "ssh://git@orczykowski/prjects/enother-project",
+      "url": "git@github.com:your-org/project-two.git",
       "excludePaths": []
     }
   ]
 }
 ```
 
+- `url` — SSH or HTTPS repository URL
+- `excludePaths` — list of path prefixes to exclude from analysis
+
+## Report Contents
+
+Each report includes:
+
+| Metric | Description |
+|---|---|
+| Commits | Number of commits per contributor |
+| Lines added | Total lines added |
+| Lines removed | Total lines removed |
+| Files changed | Number of unique files touched |
+| Production lines | Lines added in production code (non-test directories) |
+| Test lines | Lines added in test directories (`src/test/`, `test/`) |
+| New files | Files created (not modified) |
+| Distribution | Percentage share of commits, lines added, lines removed, and files changed per project |
+
+The HTML report includes a search bar for filtering results by contributor name.
+
+## Development
+
+### Build
+
+```bash
+./gradlew clean build
+```
+
+### Run Tests
+
+```bash
+./gradlew clean test
+```
+
+### Tech Stack
+
+- Java 21, Spring Boot 3.3
+- JGit for repository analysis
+- Groovy + Spock for testing
+- FreeMarker (HTML), iText (PDF), Apache Commons CSV (CSV)
