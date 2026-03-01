@@ -13,11 +13,11 @@ A command-line tool that calculates contribution statistics across multiple Git 
 - **Path exclusions** — exclude directories (e.g., generated code, vendor) per project
 - **Parallel execution** — concurrent repository analysis with configurable thread pool
 
-## Requirements
-
-- [Java 21+](https://openjdk.java.net/projects/jdk/21/)
-- SSH key or credentials configured for your Git hosting provider
-  ([GitHub SSH setup](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account))
+## Tech Stack
+- Java 25 (source compatibility), Spring Boot 3.5.6, non-web application (spring.main.web-application-type: NONE)
+- JGit for repository cloning and diff analysis
+- Groovy + Spock 2.3 for tests (files in src/test/groovy/, *Spec.groovy naming)
+- FreeMarker (HTML reports), iText (PDF), Apache Commons CSV (CSV)
 
 ## Quick Start
 
@@ -124,9 +124,3 @@ The HTML report includes a search bar for filtering results by contributor name.
 ./gradlew clean test
 ```
 
-### Tech Stack
-
-- Java 21, Spring Boot 3.3
-- JGit for repository analysis
-- Groovy + Spock for testing
-- FreeMarker (HTML), iText (PDF), Apache Commons CSV (CSV)

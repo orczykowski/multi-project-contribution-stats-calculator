@@ -2,7 +2,7 @@ plugins {
     id 'java'
     id 'groovy'
     id 'io.spring.dependency-management' version '1.1.7'
-    id 'org.springframework.boot' version '3.5.6'
+    id 'org.springframework.boot' version '4.0.3'
     id 'application'
 }
 
@@ -15,7 +15,7 @@ version '1.0.3'
 
 ext {
     commonsCsvVersion = '1.8'
-    jacksonVersion = '2.12.1'
+    jacksonVersion = '3.0.1'
     freemarkerVersion = '2.3.30'
     itextVersion = '5.5.13.2'
     jgitVersion = '7.1.0.202411261347-r'
@@ -53,7 +53,7 @@ String safeGet(String name) {
 dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter'
     implementation group: 'org.apache.commons', name: 'commons-csv', version: "${commonsCsvVersion}"
-    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: "${jacksonVersion}"
+    implementation group: 'tools.jackson.core', name: 'jackson-databind', version: "${jacksonVersion}"
     implementation group: 'org.freemarker', name: 'freemarker', version: "${freemarkerVersion}"
     implementation group: 'com.itextpdf', name: 'itextpdf', version: "${itextVersion}"
     implementation group: 'org.eclipse.jgit', name: 'org.eclipse.jgit', version: "${jgitVersion}"

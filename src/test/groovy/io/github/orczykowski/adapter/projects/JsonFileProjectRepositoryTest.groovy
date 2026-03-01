@@ -1,6 +1,6 @@
 package io.github.orczykowski.adapter.projects
 
-import com.fasterxml.jackson.databind.ObjectMapper
+import tools.jackson.databind.json.JsonMapper
 import io.github.orczykowski.core.project.Project
 import io.github.orczykowski.core.project.ProjectRepository
 import io.github.orczykowski.core.project.ReportFormat
@@ -18,7 +18,7 @@ class JsonFileProjectRepositoryTest extends Specification {
         def pathToRepo = new File("src/test/resources/projects.json").getAbsolutePath()
         repository = new JsonFileProjectRepository({
             new io.github.orczykowski.core.CalculationSpecificationSupplier.CalculationSpecification(null, null, pathToRepo, ReportFormat.HTML, "/tmp", 100)
-        }, new ObjectMapper())
+        }, JsonMapper.builder().build())
     }
 
     def "should return stream of all defined projects"() {

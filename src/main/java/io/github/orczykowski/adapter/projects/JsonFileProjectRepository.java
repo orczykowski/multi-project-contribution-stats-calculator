@@ -1,6 +1,6 @@
 package io.github.orczykowski.adapter.projects;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import io.github.orczykowski.core.CalculationSpecificationSupplier;
 import io.github.orczykowski.core.FetchingProjectException;
 import org.slf4j.Logger;
@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 import io.github.orczykowski.core.project.Project;
 import io.github.orczykowski.core.project.ProjectRepository;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -54,7 +53,7 @@ class JsonFileProjectRepository implements ProjectRepository {
               .filter(Objects::nonNull)
               .map(this::asDomain)
               .collect(Collectors.toUnmodifiableSet());
-    } catch (final IOException ex) {
+    } catch (final Exception ex) {
       log.error("Cannot parse json file repository [{}]", ex.getMessage(), ex);
       throw new FetchingProjectException(pathToProjectsRepositoriesFile, ex);
     }
