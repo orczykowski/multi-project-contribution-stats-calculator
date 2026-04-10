@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Multi project contribution report - orczykowski.pl</title>
+    <title>Multi project contribution report</title>
 </head>
 <style>
     :root {
