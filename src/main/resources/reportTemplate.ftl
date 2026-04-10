@@ -227,6 +227,14 @@
         text-align: center;
         font-size: 12px;
         color: var(--text-secondary);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+    }
+
+    #orczykowski p {
+        margin: 0;
     }
 
     #orczykowski a {
@@ -299,7 +307,12 @@
         <li><a href="#repositoryStats">PROJECT CONTRIBUTION STATISTICS</a></li>
     </ol>
     <hr/>
-    <p id="orczykowski">created by <a href="https://orczykowski.github.io/aboutme">Orczykowski</a></p>
+    <div id="orczykowski">
+        <p>created by <a href="https://orczykowski.github.io/aboutme">Orczykowski</a></p>
+        <a href="https://buymeacoffee.com/tasior" target="_blank">
+            <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" width="130" height="36">
+        </a>
+    </div>
 </nav>
 <div id="reports">
     <#assign failuresCount=report.failures()?size >

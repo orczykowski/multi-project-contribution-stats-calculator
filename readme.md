@@ -124,3 +124,14 @@ The HTML report includes a search bar for filtering results by contributor name.
 ./gradlew clean test
 ```
 
+## Support
+
+If you like this project, I would really appreciate your support.
+
+Maintaining open source takes time, and your support helps keep this project alive and improving.
+
+<a href="https://buymeacoffee.com/tasior" target="_blank">
+  <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" width="217" height="60">
+</a>
+
+---
